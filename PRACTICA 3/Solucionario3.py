@@ -1,6 +1,6 @@
-#1. Clase de conductor.
+# 1. Clase de conductor.
 class Conductor:
-    def _init_(self, nombre):
+    def __init__(self, nombre):  # Se corrige el constructor
         self.nombre = nombre
         self.horarios = []
 
@@ -10,9 +10,9 @@ class Conductor:
         self.horarios.append(horario)
         return True
 
-#2. Clase de bus.
+# 2. Clase de bus.
 class Bus:
-    def _init_(self, numero_bus):
+    def __init__(self, numero_bus):  # Se corrige el constructor
         self.numero_bus = numero_bus
         self.ruta = None
         self.horarios = []
@@ -32,9 +32,9 @@ class Bus:
         conductor.agregar_horario(horario)
         return True
 
-#3. Clase Administrador.
+# 3. Clase Administrador.
 class Admin:
-    def _init_(self):
+    def __init__(self):  # Se corrige el constructor
         self.buses = []
         self.conductores = []
 
@@ -71,25 +71,24 @@ class Admin:
         for conductor in self.conductores:
             print(f"Conductor: {conductor.nombre}, Horarios: {conductor.horarios}")
 
-
-#4. Ejemplo de uso
+# 4. Ejemplo de uso
 admin = Admin()
 
-#5. Buses y Conductores
+# 5. Buses y Conductores
 bus1 = admin.agregar_bus(1)
 bus2 = admin.agregar_bus(2)
 conductor1 = admin.agregar_conductor("Alejandra")
 conductor2 = admin.agregar_conductor("Britney")
 
-#6. Rutas y horarios
+# 6. Rutas y horarios
 bus1.agregar_ruta("Ruta A")
 admin.registrar_horario_bus(1, "10:00")
 admin.registrar_horario_bus(1, "12:00")
 
-#7. Conductores de los buses
+# 7. Conductores de los buses
 admin.asignar_conductor_a_bus(1, "Alejandra", "10:00")
 admin.asignar_conductor_a_bus(1, "Britney", "12:00")
 
-#8. Ejecutando información 
+# 8. Ejecutando información 
 admin.mostrar_buses()
 admin.mostrar_conductores()

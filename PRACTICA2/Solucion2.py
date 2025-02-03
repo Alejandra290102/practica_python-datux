@@ -78,3 +78,5 @@ def mostrar_listado_productos():
     print("Listado de productos:")
     for producto in productos:
         print(producto)
+
+menu()
