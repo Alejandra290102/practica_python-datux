@@ -1,6 +1,6 @@
 # 1. Clase de conductor.
 class Conductor:
-    def __init__(self, nombre):  # Se corrige el constructor
+    def __init__(self, nombre):  
         self.nombre = nombre
         self.horarios = []
 
@@ -12,29 +12,31 @@ class Conductor:
 
 # 2. Clase de bus.
 class Bus:
-    def __init__(self, numero_bus):  # Se corrige el constructor
+    def __init__(self, numero_bus):  
         self.numero_bus = numero_bus
         self.ruta = None
         self.horarios = []
-        self.conductores_asignados = []
+        self.conductores_asignados = {}
 
     def agregar_ruta(self, ruta):
         self.ruta = ruta
 
     def asignar_conductor(self, conductor, horario):
-        if horario in self.horarios:
-            return False  
-        for c in self.conductores_asignados:
-            if horario in c.horarios:
-                return False  
-        self.horarios.append(horario)
-        self.conductores_asignados.append(conductor)
-        conductor.agregar_horario(horario)
+        if horario not in self.horarios:
+            return False  # El horario no está registrado para el bus
+        
+        if horario in self.conductores_asignados:
+            return False  # Ya hay un conductor asignado a este horario
+
+        if not conductor.agregar_horario(horario):
+            return False  # El conductor ya tiene asignado este horario en otro bus
+
+        self.conductores_asignados[horario] = conductor
         return True
 
 # 3. Clase Administrador.
 class Admin:
-    def __init__(self):  # Se corrige el constructor
+    def __init__(self):  
         self.buses = []
         self.conductores = []
 
@@ -49,11 +51,10 @@ class Admin:
         return conductor
 
     def registrar_horario_bus(self, numero_bus, horario):
-        for bus in self.buses:
-            if bus.numero_bus == numero_bus:
-                if horario not in bus.horarios:
-                    bus.horarios.append(horario)
-                    return True
+        bus = next((b for b in self.buses if b.numero_bus == numero_bus), None)
+        if bus and horario not in bus.horarios:
+            bus.horarios.append(horario)
+            return True
         return False
 
     def asignar_conductor_a_bus(self, numero_bus, nombre_conductor, horario):
@@ -65,7 +66,9 @@ class Admin:
 
     def mostrar_buses(self):
         for bus in self.buses:
-            print(f"Bus {bus.numero_bus}, Ruta: {bus.ruta}, Horarios: {bus.horarios}, Conductores: {[c.nombre for c in bus.conductores_asignados]}")
+            print(f"Bus {bus.numero_bus}, Ruta: {bus.ruta}, Horarios: {bus.horarios}")
+            for horario, conductor in bus.conductores_asignados.items():
+                print(f"  - Horario {horario}: Conductor {conductor.nombre}")
 
     def mostrar_conductores(self):
         for conductor in self.conductores:
